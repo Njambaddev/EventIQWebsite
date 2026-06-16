@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 64" width="260" height="64">
+  <defs>
+    <linearGradient id="goldL" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9A84C"/>
+      <stop offset="1" stop-color="#A8842F"/>
+    </linearGradient>
+  </defs>
+
+  <!-- mark -->
+  <g transform="translate(2,10)">
+    <rect width="44" height="44" rx="10" fill="#0D0D0D"/>
+    <g fill="url(#goldL)">
+      <rect x="9"  y="16" width="4" height="12" rx="2"/>
+      <rect x="16" y="10" width="4" height="24" rx="2"/>
+      <rect x="23" y="7"  width="4" height="30" rx="2"/>
+      <rect x="30" y="13" width="4" height="18" rx="2"/>
+    </g>
+  </g>
+
+  <!-- wordmark -->
+  <text x="60" y="41" font-family="'Cormorant Garamond', Georgia, 'Times New Roman', serif" font-size="32" font-weight="400" letter-spacing="0.5">
+    <tspan fill="#0D0D0D">Event </tspan><tspan fill="url(#goldL)">IQ</tspan>
+  </text>
+</svg>
