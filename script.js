@@ -3,6 +3,7 @@
   var SECTIONS = ['about','packages','portfolio'];
   var BASE = location.pathname.replace(/[^\/]*$/, '');   // directory of current page
   var IS_HOME = !!document.getElementById('about');      // sections only exist on the homepage
+  var IS_CONTACT = !!document.getElementById('contactForm');
 
   function sectionFromHref(href){
     var hash = href.match(/#(about|packages|portfolio)$/);
@@ -32,12 +33,22 @@
       }
       return;
     }
+    if(/(^|\/)contact(\.html)?$/.test(href)){
+      e.preventDefault();
+      if(IS_CONTACT) window.scrollTo({top:0, behavior:'smooth'});
+      else location.assign(BASE + 'contact.html');   // load real file, page rewrites URL to /contact
+      return;
+    }
     if(IS_HOME && (href === './' || href === '.' || href === BASE)){
       e.preventDefault();
       history.replaceState({}, '', BASE);
       window.scrollTo({top:0, behavior:'smooth'});
     }
   });
+
+  if(IS_CONTACT){
+    history.replaceState({}, '', BASE + 'contact');   // show clean /contact in the address bar
+  }
 
   if(IS_HOME){
     var stored = sessionStorage.getItem('eiq_section');
