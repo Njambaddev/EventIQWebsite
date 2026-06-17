@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Event IQ</title>
+<script>
+// GitHub Pages fallback: turn clean section paths back into a homepage scroll.
+(function(){
+  var SECTIONS = ['about','packages','portfolio'];
+  var dir = location.pathname.replace(/[^\/]*$/, '');      // site directory
+  var seg = location.pathname.replace(/\/$/, '').split('/').pop();
+  if(SECTIONS.indexOf(seg) !== -1){
+    sessionStorage.setItem('eiq_section', seg);
+    location.replace(dir);                                  // load homepage, it scrolls
+  }else if(seg === 'contact'){
+    location.replace(dir + 'contact.html');
+  }else{
+    location.replace(dir);                                  // unknown -> homepage
+  }
+})();
+</script>
+</head>
+<body></body>
+</html>

@@ -1,3 +1,62 @@
+// Clean-path section routing (no # in the URL)
+(function(){
+  var SECTIONS = ['about','packages','portfolio'];
+  var BASE = location.pathname.replace(/[^\/]*$/, '');   // directory of current page
+  var IS_HOME = !!document.getElementById('about');      // sections only exist on the homepage
+
+  function sectionFromHref(href){
+    var hash = href.match(/#(about|packages|portfolio)$/);
+    if(hash) return hash[1];
+    var seg = href.replace(/^\.\//,'').replace(/\/$/,'').split('/').pop();
+    return SECTIONS.indexOf(seg) !== -1 ? seg : null;
+  }
+  function scrollToSection(id, behavior){
+    var el = document.getElementById(id);
+    if(el) el.scrollIntoView({behavior: behavior || 'smooth'});
+  }
+
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a');
+    if(!a) return;
+    var href = a.getAttribute('href');
+    if(!href || /^(https?:|mailto:|tel:)/.test(href)) return;
+    var name = sectionFromHref(href);
+    if(name){
+      e.preventDefault();
+      if(IS_HOME){
+        history.pushState({section:name}, '', BASE + name);
+        scrollToSection(name);
+      }else{
+        sessionStorage.setItem('eiq_section', name);
+        location.assign(BASE);           // go to homepage, it will scroll
+      }
+      return;
+    }
+    if(IS_HOME && (href === './' || href === '.' || href === BASE)){
+      e.preventDefault();
+      history.replaceState({}, '', BASE);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  });
+
+  if(IS_HOME){
+    var stored = sessionStorage.getItem('eiq_section');
+    var seg = location.pathname.replace(/\/$/,'').split('/').pop();
+    if(stored){
+      sessionStorage.removeItem('eiq_section');
+      history.replaceState({section:stored}, '', BASE + stored);
+      requestAnimationFrame(function(){ scrollToSection(stored, 'auto'); });
+    }else if(SECTIONS.indexOf(seg) !== -1){
+      requestAnimationFrame(function(){ scrollToSection(seg, 'auto'); });
+    }
+    window.addEventListener('popstate', function(){
+      var s = location.pathname.replace(/\/$/,'').split('/').pop();
+      if(SECTIONS.indexOf(s) !== -1) scrollToSection(s);
+      else window.scrollTo({top:0});
+    });
+  }
+})();
+
 // Nav background darkens on scroll
 const nav=document.querySelector('nav');
 if(nav){
